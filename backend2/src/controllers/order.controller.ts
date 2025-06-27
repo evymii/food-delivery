@@ -18,7 +18,7 @@ export const getFoodOrderById = async (
 ) => {
   try {
     const { userId } = request.params;
-    const order = await Order.findById(userId).populate("User");
+    const order = await Order.findById(userId).populate("user");
 
     response.json({
       success: true,
