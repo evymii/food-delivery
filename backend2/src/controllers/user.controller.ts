@@ -11,7 +11,6 @@ export const signIn = async (request: Request, response: Response) => {
     const token = jwt.sign({ userId: user?._id || "" }, "meow-test", {
       expiresIn: "2h",
     });
-    console.log(comparedPass);
 
     if (comparedPass) {
       response.status(200).json({
