@@ -1,11 +1,10 @@
 import mongoose from "mongoose";
-import { orderItemSchema } from "./order.models.js";
 
 const { Schema, model, Types } = mongoose;
 
 const food = new Schema(
   {
-    id: [orderItemSchema],
+    id: { type: Types.ObjectId, ref: "OrderItemSchema" },
     foodName: String,
     price: Number,
     image: String,
