@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { orderItemSchema } from "./order.models.js";
 
-const { Schema, model } = mongoose;
+const { Schema, model, Types } = mongoose;
 
 const food = new Schema(
   {
@@ -10,6 +10,7 @@ const food = new Schema(
     price: Number,
     image: String,
     ingredients: String,
+    category: { type: Types.ObjectId, ref: "Category" },
   },
   { timestamps: true }
 );
