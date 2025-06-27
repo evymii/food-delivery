@@ -1,0 +1,20 @@
+import express from "express";
+import {
+  getUserAuth,
+  createUserSignIn,
+  createUserResetPassReq,
+  createUserSignUp,
+  getUserResetPassReq,
+  createUserResetPass,
+} from "../controllers/authentication.controller.js";
+
+const authRouter = express.Router();
+
+authRouter.get("/refresh", getUserAuth);
+authRouter.get("/verify-reset-password-request", getUserResetPassReq);
+authRouter.post("/sign-in", createUserSignIn);
+authRouter.post("/sign-up", createUserSignUp);
+authRouter.post("/reset-password-request", createUserResetPassReq);
+authRouter.post("/reset-password", createUserResetPass);
+
+export default authRouter;
