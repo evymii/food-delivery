@@ -14,8 +14,8 @@ const order = new Schema(
     orderItems: [orderItemSchema],
     status: {
       type: String,
-      enum: ["Pending", "Canceled", "Delivered"],
-      default: "Pending",
+      enum: ["PENDING", "CANCELED", "DELIVERED"],
+      default: "PENDING",
     },
     user: { type: Types.ObjectId, ref: "User" },
     totalPrice: Number,
