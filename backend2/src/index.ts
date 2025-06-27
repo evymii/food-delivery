@@ -9,7 +9,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-mongoose.connect(process.env.MONGOOSE_URL as string);
+mongoose.connect((process.env.MONGOOSE_URL as string) || "");
 
 const server = express();
 server.use(express.json());
