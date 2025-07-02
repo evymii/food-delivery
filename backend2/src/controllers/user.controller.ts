@@ -119,6 +119,45 @@ export const deleteUser = async (request: Request, response: Response) => {
   }
 };
 
+export const resetPasswordRequest = (_request: Request, response: Response) => {
+  response.send("auth/resetPassword huselt irlee");
+};
+
+export const verifyResetPasswordRequest = async (
+  request: Request,
+  response: Response
+) => {
+  try {
+    const { email, password } = request.body;
+    const user = await User.findOne({ email });
+
+    const validPassword = await bcrypt.compare(password, user?.password || "");
+
+    if (!validPassword) {
+      response.status(200).json({
+        success: false,
+        message: "Not authenticated",
+        isVerified: false,
+      });
+    } else {
+      const token = jwt.sign({ userId: user?._id || "" }, "pinecone-test", {
+        expiresIn: "24h",
+      });
+      response.status(200).json({
+        success: true,
+        message: "Authenticated",
+        token: token,
+        isVerified: true,
+      });
+    }
+  } catch (error) {
+    response.status(444).json({
+      success: false,
+      error: error,
+    });
+  }
+};
+
 export const resetPassword = async (request: Request, response: Response) => {
   try {
     const { email, password, newPassword, confirmPassword } = request.body;
@@ -178,4 +217,5 @@ export const resetPassword = async (request: Request, response: Response) => {
       error: error,
     });
   }
+  response.send("auth/ resetPassword huselt irlee");
 };

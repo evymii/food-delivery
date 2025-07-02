@@ -1,19 +1,20 @@
 import express from "express";
 import {
   refresh,
-  getUserByid,
-  updateUser,
-  deleteUser,
   signIn,
   signUp,
+  verifyResetPasswordRequest,
+  resetPasswordRequest,
+  resetPassword,
 } from "../controllers/user.controller.js";
 
 const userRouter = express.Router();
 
-userRouter.post("/signin", signIn);
-userRouter.post("/signUp", signUp);
-userRouter.get("/", refresh);
-userRouter.get("/:userId", getUserByid);
-userRouter.patch("/:foodOrderId", updateUser);
-userRouter.delete("/:foodOrderId", deleteUser);
+userRouter.get("/refresh", refresh);
+userRouter.get("/verify-reset-password-request", verifyResetPasswordRequest);
+userRouter.post("/sign-in", signIn);
+userRouter.post("/sign-up", signUp);
+userRouter.post("/reset-password-request", resetPasswordRequest);
+userRouter.post("/reset-password", resetPassword);
+
 export default userRouter;

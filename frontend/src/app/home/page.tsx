@@ -1,8 +1,10 @@
+"use client";
+import { useState } from "react";
+import { useEffect } from "react";
+
 import Categories from "@/components/categories";
 import Nav from "@/components/nav";
 import SpecialFOD from "@/components/specialFOD";
-import { useState, useEffect } from "react";
-
 export type Card = {
   id: number;
   title: string;
@@ -21,7 +23,11 @@ export default function Home() {
   const [sideDishes, setSideDishes] = useState<Card[]>([]);
   const [desserts, setDesserts] = useState<Card[]>([]);
   const [beverages, setBeverages] = useState<Card[]>([]);
+
   const [categories, setCategories] = useState<Card[]>([]);
+  const [user, setUser] = useState<Card[]>([]);
+  const [order, setOrder] = useState<Card[]>([]);
+  const [food, setFood] = useState<Card[]>([]);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +50,7 @@ export default function Home() {
       return data.results || [];
     } catch (error) {
       console.error(`Error fetching ${endpoint}:`, error);
-      setError(`Failed to load ${endpoint} movies`);
+      setError(`Failed to load ${endpoint} `);
       return [];
     }
   };
@@ -61,10 +67,12 @@ export default function Home() {
         ]);
 
         setCategories(category);
-        setFeaturedMovies(nowPlaying.slice(0, 5));
+        setOrder(order);
+        setUser(user);
+        setFood(food);
       } catch (error) {
         console.error("Error loading data:", error);
-        setError("Failed to load movie data");
+        setError("Failed to load food delivery data");
       } finally {
         setIsLoading(false);
       }
@@ -72,6 +80,22 @@ export default function Home() {
 
     loadData();
   }, []);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-red-500 text-xl">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className=" flex flex-col items-center w-screen h-max bg-[#323232]">

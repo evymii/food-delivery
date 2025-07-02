@@ -1,5 +1,5 @@
 import CardSec from "./CardSec";
-import { Card } from "../app/page";
+import { Card } from "../app/home/page";
 
 type Props = {
   cards?: Card[];
