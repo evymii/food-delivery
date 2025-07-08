@@ -158,7 +158,7 @@ export const verifyResetPasswordRequest = async (
   }
 };
 
-export const resetPassword = async (request: Request, response: Response) => {
+export const resetPassword = async (request: Request, response: any) => {
   try {
     const { email, password, newPassword, confirmPassword } = request.body;
 
