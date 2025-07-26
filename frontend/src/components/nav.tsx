@@ -3,6 +3,7 @@ import { MapPin } from "lucide-react";
 import { ChevronRight } from "lucide-react";
 import { ShoppingCart } from "lucide-react";
 import { User } from "lucide-react";
+import { NavCartButton } from "./cartbutton";
 
 const Nav = () => {
   return (
@@ -23,12 +24,7 @@ const Nav = () => {
               <ChevronRight size={20} color="#18181B" strokeWidth={1.5} />
             </div>
           </div>
-          <div className=" flex">
-            <Button className=" w-10 h-10 flex rounded-3xl  hover:shadow-white hover:bg-white bg-white relative" />
-            <div className=" absolute flex w-5 h-5 my-2 mx-2.5">
-              <ShoppingCart size={20} color="#000000" strokeWidth={1.5} />
-            </div>
-          </div>
+          <NavCartButton />
           <div className=" flex">
             <Button className=" w-10 h-10  hover:shadow-white hover:bg-red-500 rounded-3xl bg-red-500 relative flex" />
             <div className=" absolute flex w-5 h-5 my-2 mx-2.5">

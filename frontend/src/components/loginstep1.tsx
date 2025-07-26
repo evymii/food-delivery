@@ -65,58 +65,50 @@ const InStep1 = ({
       <p className="text-gray-600 text-sm">
         Log in to enjoy your favorite dishes.
       </p>
+      <form action="onSubmit" onSubmit={handleSubmit(onSubmit)}>
+        <div className="space-y-1">
+          <input
+            {...register("email")}
+            id="email"
+            type="email"
+            placeholder="Enter your email address"
+            className="border border-gray-400 focus:border-gray-500 p-2 w-full rounded-md"
+          />
+          {errors.email && (
+            <p id="email-error" className="text-red-500 text-xs italic">
+              {errors.email}
+            </p>
+          )}
+        </div>
 
-      <div className="space-y-1">
-        <input
-          type="email"
-          required
-          value={data.email}
-          onChange={handleEmailChange}
-          placeholder="Enter your email address"
-          className="border border-gray-400 focus:border-gray-500 p-2 w-full rounded-md"
-          aria-invalid={!!errors.email}
-          aria-describedby="email-error"
-        />
-        {errors.email && (
-          <p id="email-error" className="text-red-500 text-xs italic">
-            {errors.email}
-          </p>
-        )}
-      </div>
+        <div className="space-y-1 mt-2 relative">
+          <input
+            {...register("password")}
+            type={showPassword ? "text" : "password"}
+            placeholder="Enter your password"
+            className="border border-gray-400 focus:border-gray-500 p-2 w-full rounded-md pr-10"
+          />
+          {errors.password && (
+            <p className="text-red-500 text-xs italic">{errors.password}</p>
+          )}
 
-      <div className="space-y-1 mt-2 relative">
-        <input
-          type={showPassword ? "text" : "password"}
-          required
-          value={data.password}
-          onChange={handlePasswordChange}
-          placeholder="Enter your password"
-          className="border border-gray-400 focus:border-gray-500 p-2 w-full rounded-md pr-10"
-          aria-invalid={!!errors.password}
-          aria-describedby="password-error"
-          autoComplete="current-password"
-        />
-        {errors.password && (
-          <p className="text-red-500 text-xs italic">{errors.password}</p>
-        )}
+          <button
+            type="button"
+            onClick={togglePasswordVisibility}
+            className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
+            aria-label={showPassword ? "Hide password" : "Show password"}
+          >
+            {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+          </button>
+        </div>
 
-        <button
-          type="button"
-          onClick={togglePasswordVisibility}
-          className="absolute right-3 top-3 text-gray-500 hover:text-gray-700"
-          aria-label={showPassword ? "Hide password" : "Show password"}
+        <Button
+          className="bg-[#18181B] hover:bg-gray-800 text-white hover:text-white border border-gray-400 transition-colors"
+          type="submit"
         >
-          {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-        </button>
-      </div>
-
-      <Button
-        className="bg-[#18181B] hover:bg-gray-800 text-white hover:text-white border border-gray-400 transition-colors"
-        type="button"
-        onClick={handleNext}
-      >
-        Let's go!
-      </Button>
+          Let's go!
+        </Button>
+      </form>
 
       <div className="flex flex-row items-center justify-center gap-1 text-sm">
         <p>Don't have an account?</p>

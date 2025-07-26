@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import InStep1 from "@/components/loginstep1";
+import InStep from "@/components/instep";
 import { useRouter } from "next/navigation";
 
 type DataProps = {
@@ -74,7 +74,7 @@ const LogIn = () => {
     <div className="flex flex-row">
       <div className="flex w-[40%] h-screen justify-center mt-[13%]">
         {step === 1 && (
-          <InStep1
+          <InStep
             data={data}
             errors={errors}
             setData={setData}

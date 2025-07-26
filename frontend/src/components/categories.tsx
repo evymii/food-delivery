@@ -1,5 +1,8 @@
-import CardSec from "./CardSec";
 import { Card } from "../app/home/page";
+import Aptzrs from "./appetizers";
+import CardSect from "./cardsec";
+import Lunchfavs from "./lunchfavs";
+import Salads from "./salads";
 
 type Props = {
   cards?: Card[];
@@ -7,16 +10,10 @@ type Props = {
 
 const Categories = ({ cards = [] }: Props) => {
   return (
-    <div className="flex bg-[#404040] w-screen max-w-[2000px] h-[900px]">
-      {cards.map((data) => (
-        <CardSec
-          key={data.id}
-          title={data.title}
-          price={data.price}
-          description={data.description}
-          image={data.poster_path}
-        />
-      ))}
+    <div className="flex  gap-5 bg-[#404040] w-full max-w-[2000px] h-max flex-col ">
+      <Salads cards={cards} title="Salads" />
+      <Aptzrs cards={cards} title="Appetizers" />
+      <Lunchfavs cards={cards} title="Lunch Favorites" />
     </div>
   );
 };

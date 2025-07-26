@@ -1,42 +1,60 @@
 import { Card } from "./ui/card";
-
+import { Plus, Check } from "lucide-react";
+import { useState } from "react";
+import { FoodDetails } from "./fooddetial";
 type Props = {
-  title: string;
+  foodName?: string;
   price?: number;
-  description: string;
+  ingredients?: string;
   image?: string;
 };
 
-const CardSec = ({ title, description, image, price }: Props) => {
-  // const imageUrl = "https://image.tmdb.org/t/p/w500";
-  // `${imageUrl}${image}`
+const CardSect = ({ foodName, ingredients, image, price }: Props) => {
+  const [isAdded, setIsAdded] = useState(false);
 
   return (
-    <div className="max-w-xs">
-      <h1>asdas</h1>
-      <h3 className="text-lg font-semibold mb-2">{title} msmiwhoewi</h3>
-      <Card className="flex flex-col w-full h-auto bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow">
-        {image && (
-          <div className="relative w-full h-48 bg-gray-100">
-            <img
-              src="../images/appetizerImage.png"
-              alt={title}
-              className="w-full h-full object-cover"
-              loading="lazy"
-            />
-          </div>
-        )}
-        <div className="p-4">
+    <Card className="flex flex-col w-100 h-110 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow p-2 gap-1">
+      {image && (
+        <div className="relative w-full bg-gray-100 flex p-0">
+          <img
+            src={image}
+            alt={foodName}
+            className="w-full h-70 object-cover rounded-2xl"
+            loading="lazy"
+          />
+
+          <FoodDetails
+            foodName={foodName}
+            price={price}
+            ingredients={ingredients}
+            image={image}
+            onAddToCart={() => setIsAdded(true)} // Callback when added to cart
+          >
+            <button className=" w-10 h-10 rounded-full mt-57 ml-82 absolute bg-white">
+              {isAdded ? (
+                <Check className="m-2 text-green-500" />
+              ) : (
+                <Plus className="m-2 text-red-500" />
+              )}
+            </button>
+          </FoodDetails>
+        </div>
+      )}
+      <div className="my-3 flex flex-col">
+        <div className="flex flex-row justify-between items-center">
+          <h3 className="text-xl font-semibold mb-2 text-red-500">
+            {foodName}
+          </h3>
           {price !== undefined && (
-            <p className="text-lg font-bold text-gray-900 mb-2">
+            <p className="text-xl font-bold text-gray-900 mb-2">
               ${price.toFixed(2)}
             </p>
           )}
-          <p className="text-gray-600 line-clamp-3">{description}</p>
         </div>
-      </Card>
-    </div>
+        <p className="text-gray-600 line-clamp-3">{ingredients}</p>
+      </div>
+    </Card>
   );
 };
 
-export default CardSec;
+export default CardSect;
