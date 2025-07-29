@@ -6,7 +6,7 @@ const AdminNav = () => {
     <div className=" flex flex-col p-5 w-60 items-center h-screen border border-gray-400">
       <div>
         <img
-          src="./images/LogoContainer.png"
+          src="../images/LogoContainer.png"
           alt=" nav logo"
           className=" flex w-40 h-10"
         />

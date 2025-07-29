@@ -1,4 +1,3 @@
-// context/CartContext.tsx
 "use client";
 
 import { createContext, useContext, useState, ReactNode } from "react";
@@ -32,7 +31,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const existingItem = prevItems.find(
         (prevItem) => prevItem.id === item.id
       );
-
       if (existingItem) {
         return prevItems.map((prevItem) =>
           prevItem.id === item.id
@@ -40,7 +38,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : prevItem
         );
       }
-
       return [...prevItems, { ...item, quantity: 1 }];
     });
   };
@@ -54,7 +51,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
       removeFromCart(id);
       return;
     }
-
     setCartItems((prevItems) =>
       prevItems.map((item) => (item.id === id ? { ...item, quantity } : item))
     );

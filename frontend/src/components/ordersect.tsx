@@ -1,322 +1,394 @@
 "use client";
+import { useState } from "react";
 
-import * as React from "react";
-import {
-  ColumnDef,
-  ColumnFiltersState,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-  VisibilityState,
-} from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+interface Order {
+  id: number;
+  customer: string;
+  food: string;
+  date: string;
+  price: string;
+  deliveryAddress: string;
+  status: string;
+}
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-
-const data: Payment[] = [
+const initialOrders: Order[] = [
   {
-    id: "m5gr84i9",
-    amount: 316,
-    status: "success",
-    email: "ken99@example.com",
+    id: 1,
+    customer: "Test@gmail.com",
+    food: "2 foods",
+    date: "2024/12/20",
+    price: "$26.97",
+    deliveryAddress:
+      "lo djke jfnjn fjncj fjeijc fe ecnijcfnei feinfeicn jodend odncnecn idneicne ncencoenc neonceocneoorijfls ndkndsken",
+    status: "Pending",
   },
   {
-    id: "3u1reuv4",
-    amount: 242,
-    status: "success",
-    email: "Abe45@example.com",
+    id: 2,
+    customer: "User1@gmail.com",
+    food: "3 foods",
+    date: "2024/12/21",
+    price: "$35.50",
+    deliveryAddress: "Address 2",
+    status: "Delivered",
   },
   {
-    id: "derv1ws0",
-    amount: 837,
-    status: "processing",
-    email: "Monserrat44@example.com",
+    id: 3,
+    customer: "User2@gmail.com",
+    food: "1 food",
+    date: "2024/12/22",
+    price: "$15.00",
+    deliveryAddress: "Address 3",
+    status: "Canceled",
   },
   {
-    id: "5kma53ae",
-    amount: 874,
-    status: "success",
-    email: "Silas22@example.com",
+    id: 4,
+    customer: "User3@gmail.com",
+    food: "4 foods",
+    date: "2024/12/23",
+    price: "$45.00",
+    deliveryAddress: "Address 4",
+    status: "Pending",
   },
   {
-    id: "bhqecj4p",
-    amount: 721,
-    status: "failed",
-    email: "carmella@example.com",
+    id: 5,
+    customer: "User4@gmail.com",
+    food: "2 foods",
+    date: "2024/12/24",
+    price: "$30.00",
+    deliveryAddress: "Address 5",
+    status: "Delivered",
+  },
+  {
+    id: 6,
+    customer: "User5@gmail.com",
+    food: "1 food",
+    date: "2024/12/25",
+    price: "$12.99",
+    deliveryAddress: "Address 6",
+    status: "Pending",
+  },
+  {
+    id: 7,
+    customer: "User6@gmail.com",
+    food: "3 foods",
+    date: "2024/12/26",
+    price: "$40.00",
+    deliveryAddress: "Address 7",
+    status: "Canceled",
+  },
+  {
+    id: 8,
+    customer: "User7@gmail.com",
+    food: "5 foods",
+    date: "2024/12/27",
+    price: "$55.50",
+    deliveryAddress: "Address 8",
+    status: "Pending",
+  },
+  {
+    id: 9,
+    customer: "User8@gmail.com",
+    food: "2 foods",
+    date: "2024/12/28",
+    price: "$25.00",
+    deliveryAddress: "Address 9",
+    status: "Delivered",
+  },
+  {
+    id: 10,
+    customer: "User9@gmail.com",
+    food: "1 food",
+    date: "2024/12/29",
+    price: "$10.00",
+    deliveryAddress: "Address 10",
+    status: "Pending",
+  },
+  {
+    id: 11,
+    customer: "User10@gmail.com",
+    food: "4 foods",
+    date: "2024/12/30",
+    price: "$50.00",
+    deliveryAddress: "Address 11",
+    status: "Canceled",
+  },
+  {
+    id: 12,
+    customer: "User11@gmail.com",
+    food: "3 foods",
+    date: "2024/12/31",
+    price: "$37.50",
+    deliveryAddress: "Address 12",
+    status: "Delivered",
+  },
+  {
+    id: 13,
+    customer: "User12@gmail.com",
+    food: "2 foods",
+    date: "2025/01/01",
+    price: "$28.00",
+    deliveryAddress: "Address 13",
+    status: "Pending",
+  },
+  {
+    id: 14,
+    customer: "User13@gmail.com",
+    food: "5 foods",
+    date: "2025/01/02",
+    price: "$60.00",
+    deliveryAddress: "Address 14",
+    status: "Delivered",
+  },
+  {
+    id: 15,
+    customer: "User14@gmail.com",
+    food: "1 food",
+    date: "2025/01/03",
+    price: "$8.50",
+    deliveryAddress: "Address 15",
+    status: "Canceled",
+  },
+  {
+    id: 16,
+    customer: "User15@gmail.com",
+    food: "3 foods",
+    date: "2025/01/04",
+    price: "$40.00",
+    deliveryAddress: "Address 16",
+    status: "Pending",
+  },
+  {
+    id: 17,
+    customer: "User16@gmail.com",
+    food: "2 foods",
+    date: "2025/01/05",
+    price: "$25.00",
+    deliveryAddress: "Address 17",
+    status: "Delivered",
+  },
+  {
+    id: 18,
+    customer: "User17@gmail.com",
+    food: "4 foods",
+    date: "2025/01/06",
+    price: "$48.00",
+    deliveryAddress: "Address 18",
+    status: "Pending",
+  },
+  {
+    id: 19,
+    customer: "User18@gmail.com",
+    food: "5 foods",
+    date: "2025/01/07",
+    price: "$55.00",
+    deliveryAddress: "Address 19",
+    status: "Canceled",
+  },
+  {
+    id: 20,
+    customer: "User19@gmail.com",
+    food: "2 foods",
+    date: "2025/01/08",
+    price: "$30.00",
+    deliveryAddress: "Address 20",
+    status: "Delivered",
+  },
+  {
+    id: 21,
+    customer: "User20@gmail.com",
+    food: "3 foods",
+    date: "2025/01/09",
+    price: "$36.00",
+    deliveryAddress: "Address 21",
+    status: "Pending",
+  },
+  {
+    id: 22,
+    customer: "User21@gmail.com",
+    food: "1 food",
+    date: "2025/01/10",
+    price: "$12.00",
+    deliveryAddress: "Address 22",
+    status: "Delivered",
+  },
+  {
+    id: 23,
+    customer: "User22@gmail.com",
+    food: "4 foods",
+    date: "2025/01/11",
+    price: "$55.00",
+    deliveryAddress: "Address 23",
+    status: "Canceled",
+  },
+  {
+    id: 24,
+    customer: "User23@gmail.com",
+    food: "3 foods",
+    date: "2025/01/12",
+    price: "$40.00",
+    deliveryAddress: "Address 24",
+    status: "Pending",
+  },
+  {
+    id: 25,
+    customer: "User24@gmail.com",
+    food: "2 foods",
+    date: "2025/01/13",
+    price: "$20.00",
+    deliveryAddress: "Address 25",
+    status: "Delivered",
   },
 ];
 
-export type Payment = {
-  id: string;
-  amount: number;
-  status: "pending" | "processing" | "success" | "failed";
-  email: string;
-};
-
-export const columns: ColumnDef<Payment>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "status",
-    header: "Status",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("status")}</div>
-    ),
-  },
-  {
-    accessorKey: "email",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Email
-          <ArrowUpDown />
-        </Button>
-      );
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount);
-
-      return <div className="text-right font-medium">{formatted}</div>;
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    cell: ({ row }) => {
-      const payment = row.original;
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
-            >
-              Copy payment ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      );
-    },
-  },
-];
-
-export function OrderSect() {
-  const [sorting, setSorting] = React.useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+const OrdersTable: React.FC = () => {
+  const [orders, setOrders] = useState<Order[]>(initialOrders);
+  const [selectedOrders, setSelectedOrders] = useState<boolean[]>(
+    new Array(initialOrders.length).fill(false)
   );
-  const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
 
-  const table = useReactTable({
-    data,
-    columns,
-    onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
-    state: {
-      sorting,
-      columnFilters,
-      columnVisibility,
-      rowSelection,
-    },
-  });
+  const toggleSelectAll = () => {
+    const allSelected = selectedOrders.every(Boolean);
+    setSelectedOrders(new Array(orders.length).fill(!allSelected));
+  };
+
+  const toggleSelectOrder = (index: number) => {
+    const newSelectedOrders = [...selectedOrders];
+    newSelectedOrders[index] = !newSelectedOrders[index];
+    setSelectedOrders(newSelectedOrders);
+  };
+
+  const updateFood = (index: number, value: string) => {
+    const foodCount = parseInt(value) || 0; // Get the number of foods
+    const newPrice = (foodCount * 13).toFixed(2); // Calculate price based on food count
+    const newOrders = [...orders];
+    newOrders[index].food = `${foodCount} food${foodCount > 1 ? "s" : ""}`; // Update food description
+    newOrders[index].price = `$${newPrice}`; // Update price
+    setOrders(newOrders);
+  };
+
+  const updateMail = (index: number, value: string) => {
+    const newOrders = [...orders];
+    newOrders[index].customer = value;
+    setOrders(newOrders);
+  };
+
+  const updateAddress = (index: number, value: string) => {
+    const newOrders = [...orders];
+    newOrders[index].deliveryAddress = value;
+    setOrders(newOrders);
+  };
+
+  const updateDate = (index: number, value: string) => {
+    const newOrders = [...orders];
+    newOrders[index].date = value;
+    setOrders(newOrders);
+  };
+
+  const updateStatus = (index: number, value: string) => {
+    const newOrders = [...orders];
+    newOrders[index].status = value;
+    setOrders(newOrders);
+  };
 
   return (
-    <div className="w-full">
-      <div className="flex items-center py-4">
-        <Input
-          placeholder="Filter emails..."
-          value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-          onChange={(event) =>
-            table.getColumn("email")?.setFilterValue(event.target.value)
-          }
-          className="max-w-sm"
-        />
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto">
-              Columns <ChevronDown />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            {table
-              .getAllColumns()
-              .filter((column) => column.getCanHide())
-              .map((column) => {
-                return (
-                  <DropdownMenuCheckboxItem
-                    key={column.id}
-                    className="capitalize"
-                    checked={column.getIsVisible()}
-                    onCheckedChange={(value) =>
-                      column.toggleVisibility(!!value)
-                    }
-                  >
-                    {column.id}
-                  </DropdownMenuCheckboxItem>
-                );
-              })}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
-      <div className="overflow-hidden rounded-md border">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
-              </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
+    <div className="  w-300 overflow-y-scroll h-screen pb-35   ">
+      <table className="min-w-full  h-screen border-collapse border border-gray-300 ">
+        <thead className="bg-gray-200 items-start  w-300 h-15 p-[-6]   ">
+          <tr>
+            <th>
+              <input
+                type="checkbox"
+                checked={selectedOrders.every(Boolean)}
+                onChange={toggleSelectAll}
+              />
+            </th>
+            <th>№</th>
+            <th>Customer</th>
+            <th>Food</th>
+            <th>Date</th>
+            <th>Price</th>
+            <th>Delivery Address</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody className="  ">
+          {orders.map((order, index) => (
+            <tr key={order.id} className="hover:bg-gray-100 h-15 ">
+              <td>
+                <input
+                  type="checkbox"
+                  checked={selectedOrders[index]}
+                  onChange={() => toggleSelectOrder(index)}
+                />
+              </td>
+              <td>{order.id}</td>
+              <td>
+                <input
+                  type="email"
+                  value={order.customer}
+                  onChange={(e) => updateMail(index, e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  value={parseInt(order.food) || ""}
+                  onChange={(e) => updateFood(index, e.target.value)}
+                />
+              </td>
+              <td>
+                <input
+                  type="date"
+                  value={order.date}
+                  onChange={(e) => updateDate(index, e.target.value)}
+                />
+              </td>
+              <td>{order.price}</td>
+              <td>
+                <input
+                  type="text"
+                  className=" flex flex-wrap w-max-25"
+                  value={order.deliveryAddress}
+                  onChange={(e) => updateAddress(index, e.target.value)}
+                />
+              </td>
+              <td
+                className={`border relative rounded-full  w-fit h-fit flex  ${
+                  order.status === "Pending"
+                    ? "border-red-400"
+                    : order.status === "Delivered"
+                    ? "border-green-400"
+                    : order.status === "Canceled"
+                    ? "border-gray-400"
+                    : ""
+                }`}
+              >
+                <select
+                  value={order.status}
+                  onChange={(e) => updateStatus(index, e.target.value)}
+                  className={`flex w-fit h-fit p-1 border-1 rounded-full relative  ${
+                    order.status === "Pending"
+                      ? "flex w-fit h-fit border-red-400 p-1 focus:border-2 rounded-full absolute"
+                      : order.status === "Delivered"
+                      ? "flex w-fit h-fit border-green-400 p-1 focus:border-2 rounded-full absolute"
+                      : order.status === "Canceled"
+                      ? "flex w-fit h-fit border-gray-400 p-1 focus:border-2 rounded-full absolute"
+                      : ""
+                  }`}
                 >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  No results.
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="text-muted-foreground flex-1 text-sm">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
+                  <option value="Pending" className=" pt-5">
+                    Pending
+                  </option>
+                  <option value="Delivered">Delivered</option>
+                  <option value="Canceled">Canceled</option>
+                </select>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
-}
+};
 
-{
-  /* <p className=" grid-cols-1 ">№</p>
-        <p>Customer</p>
-        <p>Food</p>
-        <p>Date</p>
-        <p>Total</p>
-        <p>Delivery Address</p>
-        <p>Delivery State</p> */
-}
+export default OrdersTable;

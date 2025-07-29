@@ -1,62 +1,35 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Categories from "@/components/categories";
 import Nav from "@/components/nav";
 import SpecialFOD from "@/components/specialFOD";
-import { CldUploadButton } from "next-cloudinary";
 import Footer from "@/components/footer";
-import { FoodDetails } from "@/components/fooddetial";
-import { AddToCart } from "@/components/cart";
 
 export type Card = {
   id: number;
   foodName?: string;
   poster_path: string;
-  backdrop_path?: string;
   price?: number;
-  description?: string;
   ingredients?: string;
-  title?: string;
 };
 
-const mockFoodData: Card[] = [
-  {
-    id: 1,
-    foodName: "Margherita Pizza",
-    poster_path: "./apt1.png",
-    price: 12.99,
-    ingredients: "Classic pizza with tomato sauce and mozzarella",
-  },
-  {
-    id: 2,
-    foodName: "Caesar Salad",
-    poster_path: "./apt2.png",
-    price: 8.99,
-    ingredients: "Fresh romaine lettuce with Caesar dressing",
-  },
-  {
-    id: 3,
-    foodName: "Caesar Salad",
-    poster_path: "./apt2.png",
-    price: 8.99,
-    ingredients: "Fresh romaine lettuce with Caesar dressing",
-  },
-
-  {
-    id: 4,
-    foodName: "Caesar Salad",
-    poster_path: "./apt2.png",
-    price: 8.99,
-    ingredients: "Fresh romaine lettuce with Caesar dressing",
-  },
-  {
-    id: 5,
-    foodName: "Caesar Salad",
-    poster_path: "./apt2.png",
-    price: 8.99,
-    ingredients: "Fresh romaine lettuce with Caesar dressing",
-  },
-];
+// const mockFoodData: Card[] = [
+//   {
+//     id: 1,
+//     foodName: "Margherita Pizza",
+//     poster_path: "./apt1.png",
+//     price: 12.99,
+//     ingredients: "Classic pizza with tomato sauce and mozzarella",
+//   },
+//   {
+//     id: 2,
+//     foodName: "Caesar Salad",
+//     poster_path: "./apt2.png",
+//     price: 8.99,
+//     ingredients: "Fresh romaine lettuce with Caesar dressing",
+//   },
+// ];
 
 export default function Home() {
   const [foodItems, setFoodItems] = useState<Card[]>([]);
@@ -65,12 +38,8 @@ export default function Home() {
   useEffect(() => {
     const fetchFood = async () => {
       try {
-        // const response = await fetch("localhost:3000/food");
-        // const data = await response.json();
-        // setFoodItems(data);
-
         setTimeout(() => {
-          setFoodItems(mockFoodData);
+          // setFoodItems(mockFoodData);
           setIsLoading(false);
         }, 100);
       } catch (error) {
@@ -95,11 +64,9 @@ export default function Home() {
       <Nav />
       <div className="flex max-w-[2000px] w-screen overflow-x-hidden flex-col">
         <SpecialFOD />
-        <Categories cards={foodItems} />
+        {/* <Categories cards={foodItems} /> */}
       </div>
-      <div>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }

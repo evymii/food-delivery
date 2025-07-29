@@ -1,14 +1,15 @@
-// components/NavCartButton.tsx
 "use client";
+
 import { ShoppingCart } from "lucide-react";
-import { BadgeNotif } from "./notfcart";
-import { AddToCart } from "./cart";
+import { BadgeNotif } from "./notfcart"; // Assuming this component displays the badge
+import { Button } from "./ui/button"; // Ensure this button component is correctly imported
 import { useCart } from "@/context/cartcontext";
-import { Button } from "./ui/button";
 
-export const NavCartButton = () => {
-  const { cartCount } = useCart();
+interface NavCartButtonProps {
+  cartCount: number; // Accept cartCount as a prop
+}
 
+export const NavCartButton = ({ cartCount }: NavCartButtonProps) => {
   return (
     <Button variant="outline" className="relative w-fit border rounded-full">
       <ShoppingCart color="#ff0000" strokeWidth={1.25} />

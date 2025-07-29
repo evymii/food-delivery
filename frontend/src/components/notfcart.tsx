@@ -1,3 +1,5 @@
+"use client"; // Ensure this is the first line
+
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
@@ -43,7 +45,11 @@ export const EmptyCard = () => {
   );
 };
 
-export const OrderPlacedCard = () => {
+interface OrderPlacedCardProps {
+  cartCount: number; // Accept cartCount as a prop
+}
+
+export const OrderPlacedCard = ({ cartCount }: OrderPlacedCardProps) => {
   const router = useRouter();
   return (
     <Dialog>
@@ -52,12 +58,12 @@ export const OrderPlacedCard = () => {
           variant="outline"
           className="bg-red-500 text-white rounded-[24px]"
         >
-          Checkout
+          Checkout {cartCount > 0 && `(${cartCount})`} {/* Display cartCount */}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-md flex flex-col items-center">
         <DialogHeader>
-          <DialogTitle>Your order has been successfully placed !</DialogTitle>
+          <DialogTitle>Your order has been successfully placed!</DialogTitle>
         </DialogHeader>
         <div className="flex items-center gap-2">
           <div className="grid flex-1 gap-2">
@@ -93,10 +99,16 @@ export const OrderHistory = ({
     <div className="w-full m-2.5">
       <div className="flex justify-between items-center">
         <div className="flex gap-5 font-bold">
-          <p>{price}</p>
+          <p>
+            {new Intl.NumberFormat("mn-MN", {
+              style: "currency",
+              currency: "MNT",
+            }).format(price)}
+          </p>{" "}
+          {/* Format price */}
           <p>({orderId})</p>
         </div>
-        <button className="border rounded-md ">{status}</button>
+        <button className="border rounded-md">{status}</button>
       </div>
     </div>
   );
