@@ -1,8 +1,7 @@
 import React from "react";
-import { Card } from "@/components/ui/card";
 
 interface Item {
-  content: String;
+  content: string;
 }
 
 export function Sliding({ items }: { items: Item[] }) {
@@ -25,8 +24,11 @@ export function Sliding({ items }: { items: Item[] }) {
     <div className="relative w-screen h-25 bg-red-500 overflow-hidden py-4">
       <div className="flex">
         <div className="flex animate-marquee whitespace-nowrap ">
-          {duplicatedItems.map((item) => (
-            <div className="mx-4 inline-block ">
+          {duplicatedItems.map((item, index) => (
+            <div
+              key={`${item.content}-${index}`}
+              className="mx-4 inline-block "
+            >
               <p className="px-6 py-4 text-white text-2xl font-extrabold">
                 {item.content}
               </p>

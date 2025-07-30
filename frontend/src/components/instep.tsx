@@ -8,7 +8,6 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useRouter } from "next/navigation";
 // import { useRouter } from "next/router";admin taldaa geh shig bollo
-import axios from "axios";
 
 const baseurl = "http://localhost:3001";
 
@@ -190,7 +189,7 @@ const LoginForm = () => {
       </form>
 
       <div className="flex items-center justify-center gap-1 text-sm">
-        <span>Don't have an account?</span>
+        <span>Don&apos;t have an account?</span>
         <Link href="/sign-up" className="text-blue-600 hover:underline">
           Sign up
         </Link>

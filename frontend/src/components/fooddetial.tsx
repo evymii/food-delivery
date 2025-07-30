@@ -2,6 +2,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
@@ -14,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Check as CheckIcon, CircleMinus, CirclePlus } from "lucide-react";
 import { useState } from "react";
-import { useCart } from "./cartcontext";
+import { useCart } from "@/context/cartcontext";
 
 type Props = {
   children?: React.ReactNode;
@@ -39,13 +40,14 @@ export const FoodDetails = ({
 
   const handleAddToCart = () => {
     addToCart({
-      id: Math.random().toString(36).substring(2, 9), // Generate unique ID
-      foodName,
+      id: `${foodName}-${Date.now()}`, // Create unique ID based on food name and timestamp
+      name: foodName,
       price,
       image,
     });
     onAddToCart?.();
     setIsOpen(false);
+    setFoodCount(1); // Reset count after adding to cart
   };
 
   const handleAddClick = () => {
@@ -62,6 +64,9 @@ export const FoodDetails = ({
         {children || <Button variant="outline">+</Button>}
       </DialogTrigger>
       <DialogContent className="w-[640px] flex items-center">
+        <DialogHeader>
+          <DialogTitle className="text-red-500">{foodName}</DialogTitle>
+        </DialogHeader>
         <div className="grid gap-4">
           {image && (
             <img
@@ -73,7 +78,6 @@ export const FoodDetails = ({
         </div>
 
         <div className="flex flex-col gap-4">
-          <DialogTitle className="text-red-500">{foodName}</DialogTitle>
           <div className="flex justify-between items-center gap-4">
             <p className="text-wrap text-xs">{ingredients}</p>
           </div>

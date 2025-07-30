@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { ShoppingCart } from "lucide-react";
 import { NavCartButton } from "./cartbutton"; // Ensure this is still present
 import { MapPin, User } from "lucide-react";
 import { ChevronRight } from "lucide-react";
@@ -12,30 +11,29 @@ interface NavProps {
 
 const Nav = ({ cartCount }: NavProps) => {
   return (
-    <div className="flex bg-[#18181B] w-screen h-30">
-      <div className="flex flex-row justify-between w-screen h-20 my-10 mx-5">
+    <div className="flex bg-[#18181B] w-full h-20 px-4 py-2">
+      <div className="flex flex-row justify-between items-center w-full max-w-7xl mx-auto">
         <img
           src="/images/weblogo.png"
           alt="navigation logo"
-          className="flex w-35 h-10"
+          className="h-8 w-auto"
         />
-        <div className="flex w-max gap-5 flex-row">
-          <div className="flex">
-            <Button className="w-78 h-10 rounded-3xl justify-center items-center hover:shadow-white hover:bg-white bg-white relative" />
-            <div className="absolute items-center flex-row flex h-fit w-fit my-2 mx-4 gap-2">
-              <MapPin size={20} color="#f50000" strokeWidth={1.5} />
-              <p className="text-red-500">Delivery address:</p>
-              <p className="text-gray-500">Add location</p>
-              <ChevronRight size={20} color="#18181B" strokeWidth={1.5} />
-            </div>
+        <div className="flex items-center gap-4">
+          <div className="flex relative">
+            <Button className="w-64 h-10 rounded-full justify-center items-center hover:shadow-lg hover:bg-gray-50 bg-white relative">
+              <div className="flex items-center gap-2">
+                <MapPin size={18} color="#f50000" strokeWidth={1.5} />
+                <p className="text-red-500 text-sm">Delivery address:</p>
+                <p className="text-gray-500 text-sm">Add location</p>
+                <ChevronRight size={18} color="#18181B" strokeWidth={1.5} />
+              </div>
+            </Button>
           </div>
-          <NavCartButton cartCount={cartCount} />{" "}
-          {/* Pass cartCount to NavCartButton */}
+          <NavCartButton cartCount={cartCount} />
           <div className="flex">
-            <Button className="w-10 h-10 hover:shadow-white hover:bg-red-500 rounded-3xl bg-red-500 relative flex" />
-            <div className="absolute flex w-5 h-5 my-2 mx-2.5">
-              <User size={20} color="#ffffff" strokeWidth={1.5} />
-            </div>
+            <Button className="w-10 h-10 hover:shadow-lg hover:bg-red-600 rounded-full bg-red-500 relative flex items-center justify-center">
+              <User size={18} color="#ffffff" strokeWidth={1.5} />
+            </Button>
           </div>
         </div>
       </div>

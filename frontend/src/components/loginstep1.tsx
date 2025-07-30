@@ -23,28 +23,8 @@ interface InStep1Props {
   handleBack: (e: React.MouseEvent) => void;
 }
 
-const InStep1 = ({
-  data,
-  errors,
-  setData,
-  handleNext,
-  handleBack,
-}: InStep1Props) => {
+const InStep1 = ({ errors, handleBack }: InStep1Props) => {
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prev) => ({
-      ...prev,
-      email: e.target.value,
-    }));
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setData((prev) => ({
-      ...prev,
-      password: e.target.value,
-    }));
-  };
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -65,10 +45,9 @@ const InStep1 = ({
       <p className="text-gray-600 text-sm">
         Log in to enjoy your favorite dishes.
       </p>
-      <form action="onSubmit" onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={(e) => e.preventDefault()}>
         <div className="space-y-1">
           <input
-            {...register("email")}
             id="email"
             type="email"
             placeholder="Enter your email address"
@@ -83,7 +62,6 @@ const InStep1 = ({
 
         <div className="space-y-1 mt-2 relative">
           <input
-            {...register("password")}
             type={showPassword ? "text" : "password"}
             placeholder="Enter your password"
             className="border border-gray-400 focus:border-gray-500 p-2 w-full rounded-md pr-10"
@@ -106,12 +84,12 @@ const InStep1 = ({
           className="bg-[#18181B] hover:bg-gray-800 text-white hover:text-white border border-gray-400 transition-colors"
           type="submit"
         >
-          Let's go!
+          Let&apos;s go!
         </Button>
       </form>
 
       <div className="flex flex-row items-center justify-center gap-1 text-sm">
-        <p>Don't have an account?</p>
+        <p>Don&apos;t have an account?</p>
         <Link href="/sign-up" className="text-blue-600 hover:underline">
           Sign up
         </Link>

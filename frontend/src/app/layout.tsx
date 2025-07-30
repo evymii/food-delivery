@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { UserContextProvider } from "@/context/usercontext";
-import { CartProvider } from "@/context/cartcontext"; // Import CartProvider
+import { CartProvider } from "@/context/cartcontext";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,12 +30,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <UserContextProvider>
-          <CartProvider>
-            {children}
-            {/* <Toaster /> Uncomment if using a toaster notification */}
-          </CartProvider>
-        </UserContextProvider>
+        <ErrorBoundary>
+          <UserContextProvider>
+            <CartProvider>
+              {children}
+              {/* <Toaster /> Uncomment if using a toaster notification */}
+            </CartProvider>
+          </UserContextProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

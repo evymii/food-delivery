@@ -1,6 +1,5 @@
 import { Card } from "../app/home/page";
 import Aptzrs from "./appetizers";
-import CardSect from "./cardsec";
 import Lunchfavs from "./lunchfavs";
 import Salads from "./salads";
 

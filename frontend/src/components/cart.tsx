@@ -21,7 +21,7 @@ import {
   OrderHistory,
   OrderPlacedCard,
 } from "@/components/notfcart";
-import { useCart } from "./cartcontext";
+import { useCart } from "@/context/cartcontext";
 import { CldImage } from "next-cloudinary";
 import { Separator } from "@radix-ui/react-dropdown-menu";
 
@@ -30,21 +30,15 @@ export const AddToCart = ({
   foodName,
   image,
   price,
-  ingredients,
 }: {
   id: string;
   image: string;
   foodName: string;
   price: number;
-  ingredients: string;
 }) => {
   const { cartItems, updateQuantity, removeFromCart } = useCart();
   const cartItem = cartItems.find((item) => item.id === id);
   const [foodCount, setFoodCount] = useState(1);
-
-  const handleAddClick = () => {
-    setFoodCount((prevNumber) => prevNumber + 1);
-  };
 
   const handleMinusClick = () => {
     if (foodCount > 1) setFoodCount((prevNumber) => prevNumber - 1);
@@ -175,7 +169,7 @@ export const AddToCart = ({
                     </span>
                   </div>
                   <DrawerClose asChild>
-                    <OrderPlacedCard />
+                    <OrderPlacedCard cartCount={foodCount} />
                   </DrawerClose>
                 </DrawerFooter>
               </Card>

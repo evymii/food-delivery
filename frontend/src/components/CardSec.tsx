@@ -30,11 +30,11 @@ const CardSect = ({ foodName, ingredients, image, price }: Props) => {
             image={image}
             onAddToCart={() => setIsAdded(true)} // Callback when added to cart
           >
-            <button className=" w-10 h-10 rounded-full mt-57 ml-82 absolute bg-white">
+            <button className="w-10 h-10 rounded-full mt-57 ml-82 absolute bg-white shadow-lg hover:shadow-xl transition-shadow">
               {isAdded ? (
-                <Check className="m-2 text-green-500" />
+                <Check className="m-2 text-green-500" size={20} />
               ) : (
-                <Plus className="m-2 text-red-500" />
+                <Plus className="m-2 text-red-500" size={20} />
               )}
             </button>
           </FoodDetails>

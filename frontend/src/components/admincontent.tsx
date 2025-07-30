@@ -1,4 +1,3 @@
-import { Divide } from "lucide-react";
 import { Button } from "./ui/button";
 import AdContentNav from "./admincontentnav";
 import OrdersTable from "./ordersect";

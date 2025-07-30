@@ -110,7 +110,7 @@ const UpStep2 = ({
         type="button"
         onClick={handleNext}
       >
-        Let's go!
+        Let&apos;s go!
       </Button>
 
       <div className="flex flex-row items-center justify-center gap-1 text-sm">
