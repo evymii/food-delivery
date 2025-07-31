@@ -63,70 +63,73 @@ export const FoodDetails = ({
       <DialogTrigger asChild>
         {children || <Button variant="outline">+</Button>}
       </DialogTrigger>
-      <DialogContent className="w-[640px] flex items-center">
-        <DialogHeader>
-          <DialogTitle className="text-red-500">{foodName}</DialogTitle>
-        </DialogHeader>
-        <div className="grid gap-4">
-          {image && (
-            <img
-              src={image}
-              alt={foodName}
-              className="w-[300px] h-[240px] object-cover rounded-lg"
-            />
-          )}
-        </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="flex justify-between items-center gap-4">
-            <p className="text-wrap text-xs">{ingredients}</p>
-          </div>
-          <div className="flex flex-row justify-between">
-            <div className="gap-2">
-              <p className="text-wrap text-xs">Total price</p>
-              <span>₮{(foodCount * (price || 0)).toFixed(2)}</span>
-            </div>
-            <div className="flex gap-1 items-center">
-              <CircleMinus
-                size={28}
-                color="#000000"
-                strokeWidth={0.75}
-                onClick={handleMinusClick}
-                className="cursor-pointer hover:scale-110 transition-transform"
+      <DialogTitle>
+        <DialogContent className="w-[640px] flex items-center">
+          <DialogHeader>
+            <DialogTitle className="text-red-500">{foodName}</DialogTitle>
+          </DialogHeader>
+          <div className="grid gap-4">
+            {image && (
+              <img
+                src={image}
+                alt={foodName}
+                className="w-[300px] h-[240px] object-cover rounded-lg"
               />
-              <span className="w-6 text-center">{foodCount}</span>
-              <CirclePlus
-                size={28}
-                color="#000000"
-                strokeWidth={0.75}
-                onClick={handleAddClick}
-                className="cursor-pointer hover:scale-110 transition-transform"
-              />
-            </div>
+            )}
           </div>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="w-full bg-black text-white hover:bg-gray-800"
-                onClick={handleAddToCart} // Call the handler when clicked
-              >
-                Add to cart
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              className="w-full mt-[-270%] ml-[-70%] h-full
+          <div className="flex flex-col gap-4">
+            <div className="flex justify-between items-center gap-4">
+              <p className="text-wrap text-xs">{ingredients}</p>
+            </div>
+            <div className="flex flex-row justify-between">
+              <div className="gap-2">
+                <p className="text-wrap text-xs">Total price</p>
+                <span>₮{(foodCount * (price || 0)).toFixed(2)}</span>
+              </div>
+              <div className="flex gap-1 items-center">
+                <CircleMinus
+                  size={28}
+                  color="#000000"
+                  strokeWidth={0.75}
+                  onClick={handleMinusClick}
+                  className="cursor-pointer hover:scale-110 transition-transform"
+                />
+                <span className="w-6 text-center">{foodCount}</span>
+                <CirclePlus
+                  size={28}
+                  color="#000000"
+                  strokeWidth={0.75}
+                  onClick={handleAddClick}
+                  className="cursor-pointer hover:scale-110 transition-transform"
+                />
+              </div>
+            </div>
+
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="outline"
+                  className="w-full bg-black text-white hover:bg-gray-800"
+                  onClick={handleAddToCart} // Call the handler when clicked
+                >
+                  Add to cart
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-full mt-[-270%] ml-[-70%] h-full
 "
-              align="start"
-            >
-              <DropdownMenuLabel className="w-full bg-black text-white flex gap-1 items-center border-none rounded-md">
-                <CheckIcon size={16} /> Food added to cart!
-              </DropdownMenuLabel>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-      </DialogContent>
+                align="start"
+              >
+                <DropdownMenuLabel className="w-full bg-black text-white flex gap-1 items-center border-none rounded-md">
+                  <CheckIcon size={16} /> Food added to cart!
+                </DropdownMenuLabel>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        </DialogContent>
+      </DialogTitle>
     </Dialog>
   );
 };

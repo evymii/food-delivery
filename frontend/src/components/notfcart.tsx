@@ -32,7 +32,7 @@ export const EmptyCard = () => {
   return (
     <div className="w-full h-fit flex flex-col items-center justify-center">
       <img
-        src="./logos/home-logo.png"
+        src="./images/emptylogo.svg"
         alt="logo"
         className="w-[30px] h-[30px]"
       />
@@ -61,27 +61,29 @@ export const OrderPlacedCard = ({ cartCount }: OrderPlacedCardProps) => {
           Checkout {cartCount > 0 && `(${cartCount})`} {/* Display cartCount */}
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md flex flex-col items-center">
-        <DialogHeader>
-          <DialogTitle>Your order has been successfully placed!</DialogTitle>
-        </DialogHeader>
-        <div className="flex items-center gap-2">
-          <div className="grid flex-1 gap-2">
-            <img src="./illustration.png" alt="successfully" />
+      <DialogTitle>
+        <DialogContent className="sm:max-w-md flex flex-col items-center">
+          <DialogHeader>
+            <DialogTitle>Your order has been successfully placed!</DialogTitle>
+          </DialogHeader>
+          <div className="flex items-center gap-2">
+            <div className="grid flex-1 gap-2">
+              <img src="./illustration.png" alt="successfully" />
+            </div>
           </div>
-        </div>
-        <DialogFooter className="sm:justify-start">
-          <DialogClose asChild>
-            <Button
-              type="button"
-              variant="secondary"
-              onClick={() => router.push("/")}
-            >
-              Back to home
-            </Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
+          <DialogFooter className="sm:justify-start">
+            <DialogClose asChild>
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() => router.push("/")}
+              >
+                Back to home
+              </Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </DialogTitle>
     </Dialog>
   );
 };
