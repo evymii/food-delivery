@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { UserContextProvider } from "@/context/usercontext";
 import { CartProvider } from "@/context/cartcontext";
+import { AdminOrdersProvider } from "@/context/adminOrdersContext";
+import { FoodProvider } from "@/context/foodContext";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 
 export const metadata: Metadata = {
@@ -20,8 +22,12 @@ export default function RootLayout({
         <ErrorBoundary>
           <UserContextProvider>
             <CartProvider>
-              {children}
-              {/* <Toaster /> Uncomment if using a toaster notification */}
+              <AdminOrdersProvider>
+                <FoodProvider>
+                  {children}
+                  {/* <Toaster /> Uncomment if using a toaster notification */}
+                </FoodProvider>
+              </AdminOrdersProvider>
             </CartProvider>
           </UserContextProvider>
         </ErrorBoundary>

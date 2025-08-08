@@ -6,12 +6,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+
 import { Button } from "@/components/ui/button";
 import { Check as CheckIcon, CircleMinus, CirclePlus } from "lucide-react";
 import { useState } from "react";
@@ -37,17 +32,32 @@ export const FoodDetails = ({
   const { addToCart } = useCart();
   const [foodCount, setFoodCount] = useState(1);
   const [isOpen, setIsOpen] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart({
-      id: `${foodName}-${Date.now()}`, // Create unique ID based on food name and timestamp
-      name: foodName,
-      price,
-      image,
-    });
+    // Create a stable ID based on food name for proper cart aggregation
+    const itemId = foodName.toLowerCase().replace(/\s+/g, "-");
+
+    // Add the item with the current quantity
+    addToCart(
+      {
+        id: itemId,
+        name: foodName,
+        price,
+        image,
+      },
+      foodCount
+    );
+
     onAddToCart?.();
-    setIsOpen(false);
-    setFoodCount(1); // Reset count after adding to cart
+    setShowConfirmation(true);
+
+    // Show confirmation for 1.5 seconds then close
+    setTimeout(() => {
+      setIsOpen(false);
+      setFoodCount(1); // Reset count after adding to cart
+      setShowConfirmation(false);
+    }, 1500);
   };
 
   const handleAddClick = () => {
@@ -55,7 +65,7 @@ export const FoodDetails = ({
   };
 
   const handleMinusClick = () => {
-    if (foodCount > 0) setFoodCount((prev) => prev - 1);
+    if (foodCount > 1) setFoodCount((prev) => prev - 1);
   };
 
   return (
@@ -64,72 +74,64 @@ export const FoodDetails = ({
         {children || <Button variant="outline">+</Button>}
       </DialogTrigger>
 
-      <DialogTitle>
-        <DialogContent className="w-[640px] flex items-center">
-          <DialogHeader>
-            <DialogTitle className="text-red-500">{foodName}</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4">
-            {image && (
-              <img
-                src={image}
-                alt={foodName}
-                className="w-[300px] h-[240px] object-cover rounded-lg"
+      <DialogContent className="w-[640px] flex items-center">
+        <DialogHeader>
+          <DialogTitle className="text-red-500">{foodName}</DialogTitle>
+        </DialogHeader>
+        <div className="grid gap-4">
+          {image && (
+            <img
+              src={image}
+              alt={foodName}
+              className="w-[300px] h-[240px] object-cover rounded-lg"
+            />
+          )}
+        </div>
+
+        <div className="flex flex-col gap-4">
+          <div className="flex justify-between items-center gap-4">
+            <p className="text-wrap text-xs">{ingredients}</p>
+          </div>
+          <div className="flex flex-row justify-between">
+            <div className="gap-2">
+              <p className="text-wrap text-xs">Total price</p>
+              <span>₮{(foodCount * (price || 0)).toFixed(2)}</span>
+            </div>
+            <div className="flex gap-1 items-center">
+              <CircleMinus
+                size={28}
+                color="#000000"
+                strokeWidth={0.75}
+                onClick={handleMinusClick}
+                className="cursor-pointer hover:scale-110 transition-transform"
               />
-            )}
+              <span className="w-6 text-center">{foodCount}</span>
+              <CirclePlus
+                size={28}
+                color="#000000"
+                strokeWidth={0.75}
+                onClick={handleAddClick}
+                className="cursor-pointer hover:scale-110 transition-transform"
+              />
+            </div>
           </div>
 
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-center gap-4">
-              <p className="text-wrap text-xs">{ingredients}</p>
+          {showConfirmation ? (
+            <div className="w-full bg-green-500 text-white p-3 rounded-lg flex items-center justify-center gap-2">
+              <CheckIcon size={20} />
+              <span className="font-semibold">Added to cart!</span>
             </div>
-            <div className="flex flex-row justify-between">
-              <div className="gap-2">
-                <p className="text-wrap text-xs">Total price</p>
-                <span>₮{(foodCount * (price || 0)).toFixed(2)}</span>
-              </div>
-              <div className="flex gap-1 items-center">
-                <CircleMinus
-                  size={28}
-                  color="#000000"
-                  strokeWidth={0.75}
-                  onClick={handleMinusClick}
-                  className="cursor-pointer hover:scale-110 transition-transform"
-                />
-                <span className="w-6 text-center">{foodCount}</span>
-                <CirclePlus
-                  size={28}
-                  color="#000000"
-                  strokeWidth={0.75}
-                  onClick={handleAddClick}
-                  className="cursor-pointer hover:scale-110 transition-transform"
-                />
-              </div>
-            </div>
-
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full bg-black text-white hover:bg-gray-800"
-                  onClick={handleAddToCart} // Call the handler when clicked
-                >
-                  Add to cart
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent
-                className="w-full mt-[-270%] ml-[-70%] h-full
-"
-                align="start"
-              >
-                <DropdownMenuLabel className="w-full bg-black text-white flex gap-1 items-center border-none rounded-md">
-                  <CheckIcon size={16} /> Food added to cart!
-                </DropdownMenuLabel>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </DialogContent>
-      </DialogTitle>
+          ) : (
+            <Button
+              variant="outline"
+              className="w-full bg-black text-white hover:bg-gray-800"
+              onClick={handleAddToCart}
+            >
+              Add to cart
+            </Button>
+          )}
+        </div>
+      </DialogContent>
     </Dialog>
   );
 };

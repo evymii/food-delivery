@@ -90,7 +90,6 @@ export const OrderPlacedCard = ({ cartCount }: OrderPlacedCardProps) => {
 
 export const OrderHistory = ({
   price,
-  status,
   orderId,
 }: {
   price: number;
@@ -98,19 +97,15 @@ export const OrderHistory = ({
   orderId: string;
 }) => {
   return (
-    <div className="w-full m-2.5">
+    <div className="w-full p-3 bg-white rounded-lg border">
       <div className="flex justify-between items-center">
-        <div className="flex gap-5 font-bold">
-          <p>
-            {new Intl.NumberFormat("mn-MN", {
-              style: "currency",
-              currency: "MNT",
-            }).format(price)}
-          </p>{" "}
-          {/* Format price */}
-          <p>({orderId})</p>
+        <div className="flex gap-4 font-semibold">
+          <p className="text-sm">
+            ${price.toFixed(2)}
+          </p>
+          <p className="text-sm text-gray-600">({orderId})</p>
         </div>
-        <button className="border rounded-md">{status}</button>
+        <div className="text-xs text-gray-500">12/12/2023</div>
       </div>
     </div>
   );

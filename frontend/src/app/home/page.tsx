@@ -7,6 +7,7 @@ import SpecialFOD from "@/components/specialFOD";
 import Footer from "@/components/footer";
 import { PageLoader } from "@/components/LoadingSpinner";
 import { useCart } from "@/context/cartcontext";
+import { useFood } from "@/context/foodContext";
 
 export type Card = {
   id: number;
@@ -48,27 +49,19 @@ const mockFoodData: Card[] = [
 ];
 
 export default function Home() {
-  const [foodItems, setFoodItems] = useState<Card[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { foodItems, loading } = useFood();
   const { cartCount } = useCart();
 
-  useEffect(() => {
-    const fetchFood = async () => {
-      try {
-        setTimeout(() => {
-          setFoodItems(mockFoodData);
-          setIsLoading(false);
-        }, 100);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        setIsLoading(false);
-      }
-    };
+  // Transform food items to match Card type
+  const transformedFoodItems: Card[] = foodItems.map(item => ({
+    id: parseInt(item._id?.slice(-4) || '0', 16), // Use last 4 chars of _id as number
+    foodName: item.foodName,
+    poster_path: item.image || "/images/saladImage.png",
+    price: item.price,
+    ingredients: item.ingredients,
+  }));
 
-    fetchFood();
-  }, []);
-
-  if (isLoading) {
+  if (loading) {
     return <PageLoader />;
   }
 
@@ -77,7 +70,7 @@ export default function Home() {
       <Nav cartCount={cartCount} />
       <div className="flex max-w-[2000px] w-screen overflow-x-hidden flex-col">
         <SpecialFOD />
-        <Categories cards={foodItems} />
+        <Categories cards={transformedFoodItems} />
       </div>
       <Footer />
     </div>

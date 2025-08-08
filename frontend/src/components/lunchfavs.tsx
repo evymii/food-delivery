@@ -16,9 +16,9 @@ const Lunchfavs = ({ cards = [], title }: Props) => {
         {cards.map((data) => (
           <CardSect
             key={data.id}
-            title={data.title}
+            foodName={data.foodName}
             price={data.price}
-            description={data.description}
+            ingredients={data.ingredients}
             image={data.poster_path}
           />
         ))}

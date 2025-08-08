@@ -1,7 +1,9 @@
 import { Card } from "./ui/card";
 import { Plus, Check } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FoodDetails } from "./fooddetial";
+import { useCart } from "@/context/cartcontext";
+
 type Props = {
   foodName?: string;
   price?: number;
@@ -10,7 +12,17 @@ type Props = {
 };
 
 const CardSect = ({ foodName, ingredients, image, price }: Props) => {
+  const { cartItems } = useCart();
   const [isAdded, setIsAdded] = useState(false);
+
+  // Check if this item is in cart and update the state accordingly
+  useEffect(() => {
+    if (foodName) {
+      const itemId = foodName.toLowerCase().replace(/\s+/g, "-");
+      const cartItem = cartItems.find((item) => item.id === itemId);
+      setIsAdded(!!cartItem);
+    }
+  }, [cartItems, foodName]);
 
   return (
     <Card className="flex flex-col w-100 h-110 bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-shadow p-2 gap-1">
@@ -28,7 +40,6 @@ const CardSect = ({ foodName, ingredients, image, price }: Props) => {
             price={price}
             ingredients={ingredients}
             image={image}
-            onAddToCart={() => setIsAdded(true)} // Callback when added to cart
           >
             <button className="w-10 h-10 rounded-full mt-57 ml-82 absolute bg-white shadow-lg hover:shadow-xl transition-shadow">
               {isAdded ? (

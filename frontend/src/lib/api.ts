@@ -73,12 +73,76 @@ export const foodAPI = {
     const response = await api.get(`/food/category/${categoryId}`);
     return response.data;
   },
+
+  create: async (foodData: {
+    foodName: string;
+    price: number;
+    image?: File | string;
+    ingredients?: string;
+    category?: string;
+  }) => {
+    // If image is a File, use FormData for multipart upload
+    if (foodData.image instanceof File) {
+      const formData = new FormData();
+      formData.append("foodName", foodData.foodName);
+      formData.append("price", foodData.price.toString());
+      formData.append("image", foodData.image);
+      if (foodData.ingredients)
+        formData.append("ingredients", foodData.ingredients);
+      if (foodData.category) formData.append("category", foodData.category);
+
+      const response = await api.post("/food", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return response.data;
+    } else {
+      // Regular JSON upload
+      const response = await api.post("/food", foodData);
+      return response.data;
+    }
+  },
+
+  update: async (
+    id: string,
+    foodData: {
+      foodName?: string;
+      price?: number;
+      image?: string;
+      ingredients?: string;
+      category?: string;
+    }
+  ) => {
+    const response = await api.patch(`/food/${id}`, foodData);
+    return response.data;
+  },
+
+  delete: async (id: string) => {
+    const response = await api.delete(`/food/${id}`);
+    return response.data;
+  },
 };
 
 // Categories API
 export const categoryAPI = {
   getAll: async () => {
     const response = await api.get("/categories");
+    return response.data;
+  },
+
+  create: async (categoryData: { categoryName: string }) => {
+    const response = await api.post("/categories", categoryData);
+    return response.data;
+  },
+
+  update: async (id: string, categoryData: { categoryName: string }) => {
+    const response = await api.patch(`/categories/${id}`, categoryData);
+    return response.data;
+  },
+
+  delete: async (id: string) => {
+    const response = await api.delete(`/categories/${id}`);
     return response.data;
   },
 };
