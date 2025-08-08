@@ -1,26 +1,46 @@
+import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { request, response } from "express";
-import { User } from "../models/user.models.js";
-// import { User } from "../models";
+import { config } from "../config/index.js";
 
-export const verifyToken = async (request: any, response: any, next: any) => {
-  const token = request.header("Authorization");
+interface AuthRequest extends Request {
+  user?: {
+    userId: string;
+  };
+}
 
-  const user = await User.findOne(request.userId);
+export const authenticateToken = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const authHeader = req.headers["authorization"];
+  const token = authHeader && authHeader.split(" ")[1]; // Bearer TOKEN
 
-  console.log("user", user);
-
-  if (!token) return response.status(401).json({ error: "Access denied" });
-
-  if (user?.role === "USER") {
-    try {
-      const decoded: any = jwt.verify(token, "meow-test");
-      request.userId = decoded.userId;
-      next();
-    } catch (error) {
-      response.status(400).json({ error: error });
-    }
-  } else {
-    response.status(400).json({ error: "Access denied!" });
+  if (!token) {
+    return res.status(401).json({
+      success: false,
+      message: "Access token required",
+    });
   }
+
+  try {
+    const decoded = jwt.verify(token, config.jwtSecret) as { userId: string };
+    req.user = decoded;
+    next();
+  } catch (error) {
+    return res.status(403).json({
+      success: false,
+      message: "Invalid or expired token",
+    });
+  }
+};
+
+export const requireAdmin = (
+  req: AuthRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  // This middleware should be used after authenticateToken
+  // You can add admin role checking logic here
+  next();
 };

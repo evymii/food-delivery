@@ -1,8 +1,6 @@
 "use client";
 import { useState } from "react";
-import { useAdminOrders, AdminOrder } from "@/context/adminOrdersContext";
-
-interface Order extends AdminOrder {}
+import { useAdminOrders } from "@/context/adminOrdersContext";
 
 const OrdersTable: React.FC = () => {
   const { adminOrders, updateOrderStatus } = useAdminOrders();

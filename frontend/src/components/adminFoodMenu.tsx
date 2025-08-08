@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Plus, Camera, X } from "lucide-react";
-import { useFood, FoodItem, Category } from "@/context/foodContext";
+import { useFood, FoodItem } from "@/context/foodContext";
 
 const AdminFoodMenu: React.FC = () => {
   const { foodItems, categories, addFoodItem, addCategory, loading, error } =
@@ -32,28 +32,30 @@ const AdminFoodMenu: React.FC = () => {
   }, [categories, selectedCategory]);
 
   const handleAddDish = async () => {
-    if (!newDish.foodName || !newDish.price || !newDish.ingredients || !newDish.category) {
-      alert("Please fill in all required fields: Dish name, Price, Ingredients, and Category");
+    if (
+      !newDish.foodName ||
+      !newDish.price ||
+      !newDish.ingredients ||
+      !newDish.category
+    ) {
+      alert(
+        "Please fill in all required fields: Dish name, Price, Ingredients, and Category"
+      );
       return;
     }
-    
+
     setIsAddingDish(true);
-    
+
     try {
-      const foodData: any = {
+      const foodData = {
         foodName: newDish.foodName,
         price: parseFloat(newDish.price),
         ingredients: newDish.ingredients,
         category: newDish.category,
+        image: newDish.image || "/images/saladImage.png",
       };
 
-      if (newDish.image) {
-        foodData.image = newDish.image;
-      } else {
-        foodData.image = "/images/saladImage.png";
-      }
-
-      await addFoodItem(foodData);
+      await addFoodItem(foodData as Parameters<typeof addFoodItem>[0]);
       // Set the category of the newly added dish as selected
       if (newDish.category) {
         setSelectedCategory(newDish.category);

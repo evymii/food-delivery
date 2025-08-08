@@ -2,33 +2,48 @@ import { Request, Response } from "express";
 import { User } from "../models/index.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { config } from "../config/index.js";
+import { createError } from "../middleware/error.middleware.js";
 
-export const signIn = async (request: Request, response: Response) => {
+export const signIn = async (
+  request: Request,
+  response: Response,
+  next: any
+) => {
   try {
     const { email, password } = request.body;
+
+    if (!email || !password) {
+      throw createError("Email and password are required", 400);
+    }
+
     const user = await User.findOne({ email });
-    const comparedPass = await bcrypt.compare(password, user?.password || "");
-    const token = jwt.sign({ userId: user?._id || "" }, "meow-test", {
-      expiresIn: "2h",
+    if (!user) {
+      throw createError("Invalid email or password", 401);
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      throw createError("Invalid email or password", 401);
+    }
+
+    const token = jwt.sign({ userId: user._id.toString() }, config.jwtSecret, {
+      expiresIn: config.jwtExpiresIn,
     });
 
-    if (comparedPass) {
-      response.status(200).json({
-        success: true,
-        message: "Authenticated",
-        token: token,
-      });
-    } else {
-      response.status(200).json({
-        success: false,
-        message: "not authenticated",
-      });
-    }
-  } catch (error) {
-    response.status(444).json({
-      success: false,
-      error: error,
+    response.status(200).json({
+      success: true,
+      message: "Authentication successful",
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+        role: user.role,
+        isVerified: user.isVerified,
+      },
     });
+  } catch (error) {
+    next(error);
   }
 };
 export const signUp = async (request: Request, response: Response) => {
